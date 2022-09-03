@@ -23,13 +23,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.17.x
-          cache: npm
+          #cache: npm
 
       - name: Run npm ci
         run: npm ci
+        working-directory: "./swa"
 
       - name: Build project
         run: npm run build
+        working-directory: "./swa"
 
       - name: Deploy to SWA
         id: builddeploy
@@ -38,7 +40,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AMBITIOUS_PLANT_063294103 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "/public"
+          app_location: "/swa/public"
           api_location: ""
           output_location: ""
           skip_app_build: true

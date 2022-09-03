@@ -10,7 +10,7 @@ const dayStr = date.getUTCDate().toString(baseTenRadix).padStart(dayOrMonthLengt
 const yyyyMmDdDateStr = `${date.getUTCFullYear()}-${monthStr}-${dayStr}`;
 
 const htmlExtension = '.html';
-const srcFolder = './src/';
+const srcFolder = './src';
 
 console.info(`Reading ${srcFolder}`);
 const files = readdirSync(srcFolder);
