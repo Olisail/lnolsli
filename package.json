@@ -1,0 +1,26 @@
+{
+  "name": "lnolsli",
+  "version": "1.0.0",
+  "description": "a simple website with SEO to introduce myself and give my socials",
+  "main": "index.js",
+  "scripts": {
+    "minify": "html-minifier --input-dir ./src/ --output-dir ./public/ --collapse-whitespace --remove-comments --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --minify-css true --minify-js true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Olisail/lnolsli.git"
+  },
+  "keywords": [
+    "olisail",
+    "socials"
+  ],
+  "author": "Olivier SAILLY",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Olisail/lnolsli/issues"
+  },
+  "homepage": "https://github.com/Olisail/lnolsli#readme",
+  "dependencies": {
+    "html-minifier": "^4.0.0"
+  }
+}
