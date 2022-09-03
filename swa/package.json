@@ -6,7 +6,8 @@
   "scripts": {
     "minify": "html-minifier --input-dir ./src/ --output-dir ./public/ --collapse-whitespace --remove-comments --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --minify-css true --minify-js true",
     "generate:sitemap": "node ./sitemap-generator.js", 
-    "build": "npm run minify && npm run generate:sitemap"
+    "build": "npm run minify && npm run generate:sitemap",
+    "debug": "npm run build && node ./index.js"
   },
   "repository": {
     "type": "git",
