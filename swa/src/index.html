@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang=en>
+
 <head>
     <meta charset=utf-8>
     <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
@@ -104,20 +105,73 @@
     </header>
     <main class="main justify-center">
         <ul>
-            <li><a rel=me href=https://twitter.com/Olisail class="align-center icon-3d"><em
+            <li><a rel=me href=https://twitter.com/Olisail class="align-center icon-3d" target="_blank"><em
                         class="fa fa-twitter fa-4x"></em>Twitter</a></li>
-            <li><a rel=me href=https://www.linkedin.com/in/olivier-sailly class="align-center icon-3d"><em
+            <li><a rel=me href=https://www.linkedin.com/in/olivier-sailly class="align-center icon-3d" target="_blank"><em
                         class="fa fa-linkedin fa-4x"></em>LinkedIn</a></li>
             <li><a id=mailto
                     href="mailto:dont@bot.me?subject=Contact%20Form&body=Hello,%0D%0A%0D%0AI'd%20like%20to%20get%20in%20touch!%0D%0A%0D%0ABest%20Regards,"
                     class="align-center icon-3d"><em class="fa fa-envelope fa-4x"></em>Email</a></li>
         </ul>
     </main>
-    <footer class="footer justify-center" xmlns:dc=http://purl.org/dc/elements/1.1/>
+    <footer class="footer justify-center" xmlns:dc=http://purl.org/dc/elements/1.1>
         <p class=copyright property=dc:rights>©&nbsp;<span property=dc:dateCopyrighted>2022</span>&nbsp;-&nbsp;<span
                 property=dc:publisher>Olivier&nbsp;SAILLY</span></p>
     </footer>
-    <script>var l = "ln-s", h = "ols.li", a = document.getElementById("mailto"); a.setAttribute("href", a.getAttribute("href").replace("dont@bot.me", l + "@" + h))</script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeaV84hAAAAAJqjpF9ffx40xmBGk4vLO2vu3EsO"></script>
+    <script>
+        function reCaptchaExecute(key, action) {
+            return new Promise((resolve, reject) => {
+                grecaptcha.ready(() =>
+                    grecaptcha.execute(key, { action }).then(
+                        token => resolve(token),
+                        reject
+                    )
+                );
+            });
+        }
+
+        async function getEmail(e) {
+            const initialCursor = 'pointer';
+            e.preventDefault();
+            
+            const element = e.target;
+            element.style.cursor = 'wait';
+
+            try {
+                const token = await reCaptchaExecute('6LeaV84hAAAAAJqjpF9ffx40xmBGk4vLO2vu3EsO', 'RetrieveEmail');
+                
+                const response = await fetch('/api/RetrieveEmail', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ challenge: token })
+                });
+
+                if (response.status !== 200) {
+                    throw new Error('Error, the captcha was not validated!');
+                }
+
+                const email = await response.text();
+
+                const fakeEmail = 'dont@bot.me';
+                let currentHref = element.getAttribute('href');
+                if(currentHref.includes(fakeEmail)){
+                    currentHref = currentHref.replace(fakeEmail, email);
+                    element.setAttribute('href', currentHref);
+                }
+            
+                element.style.cursor = initialCursor;
+                window.location.href = currentHref;
+            } catch (error) {
+                console.warn('Error detected while validating the captcha!', JSON.stringify(error));
+                element.style.cursor = initialCursor;
+            }
+        }
+
+        document.getElementById('mailto').addEventListener('click', getEmail);
+    </script>
 </body>
 
 </html>

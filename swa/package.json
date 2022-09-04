@@ -2,12 +2,12 @@
   "name": "lnolsli",
   "version": "1.0.0",
   "description": "a simple website with SEO to introduce myself and give my socials",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
-    "minify": "html-minifier --input-dir ./src/ --output-dir ./public/ --collapse-whitespace --remove-comments --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --minify-css true --minify-js true",
-    "generate:sitemap": "node ./sitemap-generator.js", 
+    "minify": "html-minifier --input-dir ./src/ --output-dir ./public/ --config-file ./minify-config.js",
+    "generate:sitemap": "node ./sitemap-generator.js",
     "build": "npm run minify && npm run generate:sitemap",
-    "debug": "npm run build && node ./index.js"
+    "debug": "npm run build && node ./index.mjs"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,8 @@
   "homepage": "https://github.com/Olisail/lnolsli#readme",
   "dependencies": {
     "html-minifier": "^4.0.0"
+  },
+  "devDependencies": {
+    "node-fetch": "^3.2.10"
   }
 }
