@@ -122,6 +122,10 @@ em {
     animation: icon3d .2s infinite;
 }
 
+.wait {
+    cursor: wait !important;
+}
+
 @keyframes icon3d {
     0% {
         text-shadow: 5px 4px #f44336, -5px -6px #2196f3;

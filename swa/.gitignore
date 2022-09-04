@@ -144,5 +144,6 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node
 
 public/css/main.css
+public/js
 public/index.html
 public/sitemap.xml
