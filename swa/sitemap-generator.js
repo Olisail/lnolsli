@@ -18,7 +18,7 @@ const files = readdirSync(srcFolder);
 console.info(`${files.length} file(s) found. Some of them may be directories and will be skipped.`);
 const xmlUrlSeparator = '\n';
 const filesAsXmlUrls = files.filter(f => f.includes(htmlExtension)).map(f => `  <url>
-    <loc>https://ln.ols.li/${f}</loc>
+    <loc>https://ln.ols.li/${f.replace('index.html', '')}</loc>
     <lastmod>${yyyyMmDdDateStr}</lastmod>
   </url>`).join(xmlUrlSeparator);
 
