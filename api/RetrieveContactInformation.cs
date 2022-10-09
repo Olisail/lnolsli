@@ -12,12 +12,13 @@ using System.Text.Json;
 
 namespace Captcha.Verify
 {
-    public static class RetrieveEmail
+    public static class RetrieveContactInformation
     {
+        private const string Action = nameof(RetrieveContactInformation);
+
         private const string ReCaptchaSecretVariableName = "ReCaptchaSecret";
         private const string ContactEmailVariableName = "ContactEmail";
-
-        private const string Action = "RetrieveEmail";
+        private const string CallMeUriVariableName = "CallMeUri";
         private const string DefaultErrorMessage = "Error detected while validating the captcha.";
 
         private const float MinimalThreshold = 0.7F;
@@ -29,9 +30,10 @@ namespace Captcha.Verify
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("RetrieveEmail trigger function processed a request.");
+            log.LogInformation("{Action} trigger function processed a request.", Action);
+
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var request = JsonSerializer.Deserialize<RetrieveEmailRequest>(requestBody);
+            var request = JsonSerializer.Deserialize<RetrieveContactInformationRequest>(requestBody);
 
             var recaptchaRequest = new ReCaptchaVerifyRequest
             {
@@ -59,14 +61,19 @@ namespace Captcha.Verify
                     return new BadRequestObjectResult(DefaultErrorMessage);
                 }
 
-                if(result.Action != Action)
+                if (result.Action != Action)
                 {
                     log.LogWarning("Error detected: wrong action, {actualAction} given", result.Action);
                     return new BadRequestObjectResult(DefaultErrorMessage);
                 }
 
                 log.LogInformation("Captcha validated!");
-                return new OkObjectResult(Environment.GetEnvironmentVariable(ContactEmailVariableName));
+                return new OkObjectResult(
+                    new RetrieveContactInformationResult(
+                        email: Environment.GetEnvironmentVariable(ContactEmailVariableName),
+                        callMeUri: new Uri(Environment.GetEnvironmentVariable(CallMeUriVariableName))
+                    )
+                );
             }
             catch (Exception ex)
             {

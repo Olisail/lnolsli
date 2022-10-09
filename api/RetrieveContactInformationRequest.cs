@@ -2,7 +2,7 @@
 
 namespace api
 {
-    internal class RetrieveEmailRequest
+    internal class RetrieveContactInformationRequest
     {
         [JsonPropertyName("challenge")]
         public string Challenge { get; set; }
