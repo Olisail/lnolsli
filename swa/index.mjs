@@ -32,14 +32,18 @@ createServer((req, res) => {
                 res.statusCode = response.status;
                 let responseData = null;
                 try {
-                    responseData = await response.clone().json();
+                    const jsonResponse = await response.clone().json();
+                    responseData = JSON.stringify(jsonResponse);
+                    console.log(`[FWD] response is a JSON: ${responseData}`);
                 } catch {
                     try {
                         responseData = await response.text();
+                        console.log(`[FWD] response is TEXT: "${JSON.stringify(responseData)}"`);
                     } catch (err) {
-                        console.log(`[FWD] response is neither a JSON nor a string: ${err}`)
+                        console.log(`[FWD] response is neither a JSON nor a string: ${err}`);
                     }
                 }
+
                 res.end(responseData);
             });
             return;
